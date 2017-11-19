@@ -1,25 +1,25 @@
-#使用selenium中webdriver驱动chrome来进行浏览器模拟
-#同时添加报头 验证身份
-#但获取的仅仅是链接 未能提取有效数据
+#Use selenium to control Chrome to simulate browser action
 
+import requests
+import redis
+import json
+import re
+import random
+import time
 from selenium import webdriver
 import time
-import json
-from pprint import pprint
-
 import csv
 
 
 post = {}
-
 driver = webdriver.Chrome(executable_path='/Users/jeremyzhang/Downloads/chromedriver')
 driver.get('https://mp.weixin.qq.com/')
 time.sleep(2)
 driver.find_element_by_xpath("./*//input[@name='account']").clear()
-driver.find_element_by_xpath("./*//input[@name='account']").send_keys('445686691@qq.com')
+driver.find_element_by_xpath("./*//input[@name='account']").send_keys('########')   ##your username
 #send keys value should be the id of your wechat id
 driver.find_element_by_xpath("./*//input[@name='password']").clear()
-driver.find_element_by_xpath("./*//input[@name='password']").send_keys('Jeremy_1994')
+driver.find_element_by_xpath("./*//input[@name='password']").send_keys('#######')   ##your password
 #send keys value should be your password
 # Click remember me
 time.sleep(5)
@@ -34,14 +34,7 @@ cookie_str = json.dumps(post)
 with open('cookie.txt', 'w+', encoding='utf-8') as f:
     f.write(cookie_str)
 
-import requests
-import redis
-import json
-import re
-import random
-import time
-
-
+#add header
 gzlist = ['yq_Butler']
 
 url = 'https://mp.weixin.qq.com'
@@ -104,7 +97,7 @@ for query in gzlist:
             'fakeid': fakeid,
             'type': '9'
         }
-        print('翻页###################',begin)
+        print('next page###################',begin)
         query_fakeid_response = requests.get(appmsg_url, cookies=cookies, headers=header, params=query_id_data)
         fakeid_list = query_fakeid_response.json().get('app_msg_list')
         for item in fakeid_list:
